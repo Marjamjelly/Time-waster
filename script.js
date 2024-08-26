@@ -4,5 +4,5 @@ function cookieClick(number){
     document.getElementById("cookies").innerHTML = cookies;
 };
 window.setInterval(function()
-	cookieClick(cursors);
+	cookieClick(1);
 }, 1000);
