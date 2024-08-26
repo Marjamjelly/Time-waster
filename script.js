@@ -1,8 +1,8 @@
-var cookies = 0;
-function cookieClick(number){
-    cookies = cookies + number;
-    document.getElementById("cookies").innerHTML = cookies;
+var seconds = 0;
+function add(number){
+    seconds = seconds + number;
+    document.getElementById("seconds").innerHTML = seconds;
 };
 window.setInterval(function(){
-	cookieClick(1);
+	add(1);
 }, 1000);
