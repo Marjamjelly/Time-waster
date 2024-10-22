@@ -8,3 +8,11 @@ window.setInterval(function(){
 	timeWaste(1);
 }, 1000);
 
+var i = 0;
+
+var interval = setInterval( increment, 1000);
+
+function increment(){
+    i = i + 1;
+    document.getElementById("seconds").innerHTML = i;
+}
