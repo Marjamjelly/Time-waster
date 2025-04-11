@@ -22,7 +22,21 @@
       <span class="label">Rank:</span> <span class="value" id="rank-value" class="">Beginner</span>
     </div>
     <div id="next-threshold">
-      <span class="label">Next Rank:</span> <span class="value" id="threshold-value">10 seconds</span>
+      <span class="label">Time to Next Rank:</span>
+      <div id="time-to-next-rank">
+        <div id="days-to-next-rank">
+          <span class="label">Days:</span> <span class="value">0</span>
+        </div>
+        <div id="hours-to-next-rank">
+          <span class="label">Hours:</span> <span class="value">0</span>
+        </div>
+        <div id="minutes-to-next-rank">
+          <span class="label">Minutes:</span> <span class="value">0</span>
+        </div>
+        <div id="seconds-to-next-rank">
+          <span class="label">Seconds:</span> <span class="value">0</span>
+        </div>
+      </div>
     </div>
   </main>
 
@@ -90,7 +104,6 @@
       { threshold: 999999, name: "God", styleClass: "rank-god" },
       { threshold: 6969420, name: "MAXIMUM NICEST", styleClass: "rank-maximum-nicest" },
       { threshold: 31536000, name: "Pure Time Waster", styleClass: "rank-pure-time-waster" }
-
     ];
 
     function getRankAndThreshold(totalSeconds) {
@@ -123,7 +136,18 @@
         setTimeout(() => rankElement.classList.remove("rank-change"), 1000);
       }
 
-      thresholdElement.textContent = `${nextThreshold - totalSeconds} seconds`;
+      // Calculate time to next rank
+      const timeToNextRank = nextThreshold - totalSeconds;
+      const days = Math.floor(timeToNextRank / 86400);
+      const hours = Math.floor((timeToNextRank % 86400) / 3600);
+      const minutes = Math.floor((timeToNextRank % 3600) / 60);
+      const seconds = timeToNextRank % 60;
+
+      // Update time breakdown
+      document.querySelector("#days-to-next-rank .value").textContent = days;
+      document.querySelector("#hours-to-next-rank .value").textContent = hours;
+      document.querySelector("#minutes-to-next-rank .value").textContent = minutes;
+      document.querySelector("#seconds-to-next-rank .value").textContent = seconds;
     }
 
     function updateTimeCounters() {
