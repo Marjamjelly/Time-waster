@@ -9,9 +9,13 @@
 <body>
   <div>
     <div id="time-tracker">
-      <div id="seconds">Seconds: 0</div>
+      <div id="seconds">
+        <span class="label">Seconds:</span> <span class="value">0</span>
+      </div>
     </div>
-    <div id="rank">Rank: Beginner</div>
+    <div id="rank">
+      <span class="label">Rank:</span> <span class="value">Beginner</span>
+    </div>
   </div>
 
   <script>
@@ -24,7 +28,7 @@
       { threshold: 10, name: "Beginner" },
       { threshold: 50, name: "Intermediate" },
       { threshold: 100, name: "Advanced" },
-      { threshold: Infinity, name: "Master" }
+      { threshold: 150, name: "Master" }
     ];
 
     // Function to determine the rank based on the total time
@@ -44,28 +48,30 @@
       const days = Math.floor(totalSeconds / 86400);
 
       // Update or create counters dynamically
-      updateOrCreateCounter("seconds", `Seconds: ${seconds}`);
-      if (totalSeconds >= 60) updateOrCreateCounter("minutes", `Minutes: ${minutes}`);
-      if (totalSeconds >= 3600) updateOrCreateCounter("hours", `Hours: ${hours}`);
-      if (totalSeconds >= 86400) updateOrCreateCounter("days", `Days: ${days}`);
+      updateOrCreateCounter("seconds", seconds, "Seconds:");
+      if (totalSeconds >= 60) updateOrCreateCounter("minutes", minutes, "Minutes:");
+      if (totalSeconds >= 3600) updateOrCreateCounter("hours", hours, "Hours:");
+      if (totalSeconds >= 86400) updateOrCreateCounter("days", days, "Days:");
     }
 
     // Function to update or create a counter dynamically in the DOM
-    function updateOrCreateCounter(id, text) {
+    function updateOrCreateCounter(id, value, label) {
       let element = document.getElementById(id);
       if (!element) {
         element = document.createElement('div');
         element.id = id;
+        element.innerHTML = `<span class="label">${label}</span> <span class="value">${value}</span>`;
         timeTracker.appendChild(element);
+      } else {
+        element.querySelector(".value").textContent = value;
       }
-      element.textContent = text;
     }
 
     // Increment the total seconds and update the display every second
     setInterval(() => {
       totalSeconds++;
       updateTimeCounters();
-      rankElement.textContent = `Rank: ${getRank(totalSeconds)}`;
+      rankElement.querySelector(".value").textContent = getRank(totalSeconds);
     }, 1000);
   </script>
 </body>

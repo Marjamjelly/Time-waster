@@ -1,39 +1,52 @@
-/* Apply a dark theme with a monospaced font */
+/* Dark mode background and text styling */
 body {
     font-family: 'Courier New', Courier, monospace;
     background-color: #121212; /* Dark background */
-    color: #e0e0e0; /* Light text color */
+    color: #e0e0e0; /* Light text */
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-}
-
-/* Style the counter */
-#counter {
-    font-size: 80px;
+  }
+  
+  /* Time tracker container */
+  #time-tracker div {
+    margin: 10px 0; /* Add spacing between counters */
+    font-size: 24px; /* Font size for counters */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /* Styling for labels */
+  .label {
+    color: #9e9e9e; /* Gray color for labels */
+    margin-right: 10px;
+  }
+  
+  /* Styling for values */
+  .value {
+    color: #4caf50; /* Green color for values */
     font-weight: bold;
-    color: #4caf50; /* Green color for the counter */
-    text-shadow: 0 4px 8px rgba(0, 255, 0, 0.6); /* Glowing effect */
-}
-
-/* Add smooth animations */
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.05);
-        opacity: 0.9;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-#counter {
-    animation: pulse 1s infinite;
-}
+    text-shadow: 0 2px 4px rgba(0, 255, 0, 0.6); /* Glow effect for values */
+  }
+  
+  /* Rank styling */
+  #rank {
+    margin-top: 20px;
+    font-size: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  #rank .label {
+    color: #ff9800; /* Orange color for "Rank" label */
+  }
+  
+  #rank .value {
+    color: #ff5722; /* Vibrant orange-red for rank value */
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(255, 87, 34, 0.6); /* Glow effect for rank value */
+  }
