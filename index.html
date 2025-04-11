@@ -22,7 +22,7 @@
       <span class="label">Rank:</span> <span class="value" id="rank-value">Beginner</span>
     </div>
     <div id="next-threshold">
-      <span class="label">Rank up: (seconds)</span> <span class="value" id="threshold-value">10</span>
+      <span class="label">Next Rank:</span> <span class="value" id="threshold-value">10 seconds</span>
     </div>
   </main>
 
@@ -109,6 +109,24 @@
       return { currentRank, nextThreshold };
     }
 
+    // Function to convert seconds to the largest possible units (e.g., minutes, hours)
+    function formatTime(seconds) {
+      const days = Math.floor(seconds / 86400);
+      const hours = Math.floor((seconds % 86400) / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      const remainingSeconds = seconds % 60;
+
+      let formattedTime = [];
+      if (days > 0) formattedTime.push(`${days} day${days > 1 ? "s" : ""}`);
+      if (hours > 0) formattedTime.push(`${hours} hour${hours > 1 ? "s" : ""}`);
+      if (minutes > 0) formattedTime.push(`${minutes} minute${minutes > 1 ? "s" : ""}`);
+      if (remainingSeconds > 0 || formattedTime.length === 0) {
+        formattedTime.push(`${remainingSeconds} second${remainingSeconds > 1 ? "s" : ""}`);
+      }
+
+      return formattedTime.join(" ");
+    }
+
     // Update the rank and next threshold display
     function updateRankAndThreshold() {
       const { currentRank, nextThreshold } = getRankAndThreshold(totalSeconds);
@@ -118,7 +136,7 @@
         setTimeout(() => rankElement.classList.remove("rank-change"), 1000);
       }
       rankElement.textContent = currentRank;
-      thresholdElement.textContent = nextThreshold;
+      thresholdElement.textContent = formatTime(nextThreshold - totalSeconds);
     }
 
     // Increment the total seconds and update the display every second
