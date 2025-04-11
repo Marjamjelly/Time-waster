@@ -1,22 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Counter</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incrementing Number with Ranks</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  You have wasted <div id="counter">0</div> seconds.
+    <div>
+        You have wasted <div id="counter">0</div> seconds.
+        <div id="rank">Rank: Beginner</div>
+    </div>
 
-  <script>
-    let count = 0;
-    const counterEl = document.getElementById('counter');
+    <script>
+        let counter = 0;
+        const counterElement = document.getElementById('counter');
+        const rankElement = document.getElementById('rank');
 
-    setInterval(() => {
-      count++;
-      counterEl.textContent = count;
-    }, 1000);
-  </script>
+        // Function to determine the rank based on the counter value
+        function getRank(counter) {
+            if (counter <= 10) {
+                return "";
+            } else if (counter <= 50) {
+                return "Intermediate";
+            } else if (counter <= 100) {
+                return "Advanced";
+            } else {
+                return "Master";
+            }
+        }
+
+        // Increment the counter and update the rank every second
+        setInterval(() => {
+            counter++;
+            counterElement.textContent = counter;
+            rankElement.textContent = `Rank: ${getRank(counter)}`;
+        }, 1000);
+    </script>
 </body>
 </html>
