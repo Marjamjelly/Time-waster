@@ -1,41 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Incrementing Number with Ranks</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Incrementing Time Tracker with Ranks</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div>
-        You have wasted <div id="counter">0</div> seconds.
-        <div id="rank">Rank: Beginner</div>
+  <div>
+    <div id="time-tracker">
+      <div id="seconds">Seconds: 0</div>
     </div>
+    <div id="rank">Rank: Beginner</div>
+  </div>
 
-    <script>
-        let counter = 0;
-        const counterElement = document.getElementById('counter');
-        const rankElement = document.getElementById('rank');
+  <script>
+    let totalSeconds = 0;
+    const timeTracker = document.getElementById('time-tracker');
+    const rankElement = document.getElementById('rank');
 
-        // Function to determine the rank based on the counter value
-        function getRank(counter) {
-            if (counter <= 10) {
-                return "";
-            } else if (counter <= 50) {
-                return "Intermediate";
-            } else if (counter <= 100) {
-                return "Advanced";
-            } else {
-                return "Master";
-            }
+    // Array to store ranks and their thresholds
+    const ranks = [
+      { threshold: 10, name: "Beginner" },
+      { threshold: 50, name: "Intermediate" },
+      { threshold: 100, name: "Advanced" },
+      { threshold: Infinity, name: "Master" }
+    ];
+
+    // Function to determine the rank based on the total time
+    function getRank(totalSeconds) {
+      for (const rank of ranks) {
+        if (totalSeconds <= rank.threshold) {
+          return rank.name;
         }
+      }
+    }
 
-        // Increment the counter and update the rank every second
-        setInterval(() => {
-            counter++;
-            counterElement.textContent = counter;
-            rankElement.textContent = `Rank: ${getRank(counter)}`;
-        }, 1000);
-    </script>
+    // Function to update the time display
+    function updateTimeCounters() {
+      const seconds = totalSeconds % 60;
+      const minutes = Math.floor(totalSeconds / 60) % 60;
+      const hours = Math.floor(totalSeconds / 3600) % 24;
+      const days = Math.floor(totalSeconds / 86400);
+
+      // Update or create counters dynamically
+      updateOrCreateCounter("seconds", `Seconds: ${seconds}`);
+      if (totalSeconds >= 60) updateOrCreateCounter("minutes", `Minutes: ${minutes}`);
+      if (totalSeconds >= 3600) updateOrCreateCounter("hours", `Hours: ${hours}`);
+      if (totalSeconds >= 86400) updateOrCreateCounter("days", `Days: ${days}`);
+    }
+
+    // Function to update or create a counter dynamically in the DOM
+    function updateOrCreateCounter(id, text) {
+      let element = document.getElementById(id);
+      if (!element) {
+        element = document.createElement('div');
+        element.id = id;
+        timeTracker.appendChild(element);
+      }
+      element.textContent = text;
+    }
+
+    // Increment the total seconds and update the display every second
+    setInterval(() => {
+      totalSeconds++;
+      updateTimeCounters();
+      rankElement.textContent = `Rank: ${getRank(totalSeconds)}`;
+    }, 1000);
+  </script>
 </body>
 </html>
