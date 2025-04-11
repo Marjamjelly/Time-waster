@@ -1,0 +1,39 @@
+/* Apply a dark theme with a monospaced font */
+body {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #121212; /* Dark background */
+    color: #e0e0e0; /* Light text color */
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Style the counter */
+#counter {
+    font-size: 80px;
+    font-weight: bold;
+    color: #4caf50; /* Green color for the counter */
+    text-shadow: 0 4px 8px rgba(0, 255, 0, 0.6); /* Glowing effect */
+}
+
+/* Add smooth animations */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.9;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+#counter {
+    animation: pulse 1s infinite;
+}
