@@ -23,20 +23,7 @@
     </div>
     <div id="next-threshold">
       <span class="label">Time to Next Rank:</span>
-      <div id="time-to-next-rank">
-        <div id="days-to-next-rank">
-          <span class="label">Days:</span> <span class="value">0</span>
-        </div>
-        <div id="hours-to-next-rank">
-          <span class="label">Hours:</span> <span class="value">0</span>
-        </div>
-        <div id="minutes-to-next-rank">
-          <span class="label">Minutes:</span> <span class="value">0</span>
-        </div>
-        <div id="seconds-to-next-rank">
-          <span class="label">Seconds:</span> <span class="value">0</span>
-        </div>
-      </div>
+      <div id="time-to-next-rank"></div>
     </div>
   </main>
 
@@ -51,7 +38,7 @@
     let totalSeconds = 0;
     const timeTracker = document.getElementById('time-tracker');
     const rankElement = document.getElementById('rank-value');
-    const thresholdElement = document.getElementById('threshold-value');
+    const timeToNextRankContainer = document.getElementById('time-to-next-rank');
 
     const ranks = [
       { threshold: 1, name: "Junior Beginner", styleClass: "rank-junior-beginner" },
@@ -143,11 +130,24 @@
       const minutes = Math.floor((timeToNextRank % 3600) / 60);
       const seconds = timeToNextRank % 60;
 
-      // Update time breakdown
-      document.querySelector("#days-to-next-rank .value").textContent = days;
-      document.querySelector("#hours-to-next-rank .value").textContent = hours;
-      document.querySelector("#minutes-to-next-rank .value").textContent = minutes;
-      document.querySelector("#seconds-to-next-rank .value").textContent = seconds;
+      // Update time breakdown dynamically
+      timeToNextRankContainer.innerHTML = ""; // Clear previous content
+      if (days > 0) addTimeIncrement("days-to-next-rank", days, "Days:");
+      if (hours > 0) addTimeIncrement("hours-to-next-rank", hours, "Hours:");
+      if (minutes > 0) addTimeIncrement("minutes-to-next-rank", minutes, "Minutes:");
+      addTimeIncrement("seconds-to-next-rank", seconds, "Seconds:");
+    }
+
+    function addTimeIncrement(id, value, label) {
+      let element = document.getElementById(id);
+      if (!element) {
+        element = document.createElement('div');
+        element.id = id;
+        element.innerHTML = `<span class="label">${label}</span> <span class="value">${value}</span>`;
+        timeToNextRankContainer.appendChild(element);
+      } else {
+        element.querySelector(".value").textContent = value;
+      }
     }
 
     function updateTimeCounters() {
