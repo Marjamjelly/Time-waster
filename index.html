@@ -38,7 +38,7 @@
     const timeTracker = document.getElementById('time-tracker');
     const rankElement = document.getElementById('rank-value');
     const thresholdElement = document.getElementById('threshold-value');
-  
+
     const ranks = [
       { threshold: 1, name: "Junior Beginner", styleClass: "rank-junior-beginner" },
       { threshold: 3, name: "Beginner", styleClass: "rank-beginner" },
@@ -90,12 +90,13 @@
       { threshold: 999999, name: "God", styleClass: "rank-god" },
       { threshold: 6969420, name: "MAXIMUM NICEST", styleClass: "rank-maximum-nicest" },
       { threshold: 31536000, name: "Pure Time Waster", styleClass: "rank-pure-time-waster" }
+
     ];
-  
+
     function getRankAndThreshold(totalSeconds) {
       let currentRank = { name: "Beginner", styleClass: "rank-beginner" };
       let nextThreshold = Infinity;
-  
+
       for (let i = 0; i < ranks.length; i++) {
         if (totalSeconds >= ranks[i].threshold) {
           currentRank = ranks[i];
@@ -106,33 +107,52 @@
       }
       return { currentRank, nextThreshold };
     }
-  
+
     function updateRankAndThreshold() {
       const { currentRank, nextThreshold } = getRankAndThreshold(totalSeconds);
-  
+
       if (rankElement.textContent !== currentRank.name) {
         rankElement.textContent = currentRank.name;
-  
+
         // Remove all previous styling classes
         rankElement.className = "";
         rankElement.classList.add(currentRank.styleClass);
-  
+
         // Add animation for rank change
         rankElement.classList.add("rank-change");
         setTimeout(() => rankElement.classList.remove("rank-change"), 1000);
       }
-  
+
       thresholdElement.textContent = `${nextThreshold - totalSeconds} seconds`;
     }
-  
-    function updateSecondsCounter() {
-      const secondsElement = document.querySelector('#seconds .value');
-      secondsElement.textContent = totalSeconds;
+
+    function updateTimeCounters() {
+      const seconds = totalSeconds % 60;
+      const minutes = Math.floor(totalSeconds / 60) % 60;
+      const hours = Math.floor(totalSeconds / 3600) % 24;
+      const days = Math.floor(totalSeconds / 86400);
+
+      updateOrCreateCounter("seconds", seconds, "Seconds:");
+      if (totalSeconds >= 60) updateOrCreateCounter("minutes", minutes, "Minutes:");
+      if (totalSeconds >= 3600) updateOrCreateCounter("hours", hours, "Hours:");
+      if (totalSeconds >= 86400) updateOrCreateCounter("days", days, "Days:");
     }
-  
+
+    function updateOrCreateCounter(id, value, label) {
+      let element = document.getElementById(id);
+      if (!element) {
+        element = document.createElement('div');
+        element.id = id;
+        element.innerHTML = `<span class="label">${label}</span> <span class="value">${value}</span>`;
+        timeTracker.appendChild(element);
+      } else {
+        element.querySelector(".value").textContent = value;
+      }
+    }
+
     setInterval(() => {
       totalSeconds++;
-      updateSecondsCounter(); // Update the seconds counter
+      updateTimeCounters();
       updateRankAndThreshold();
     }, 1000);
   </script>
