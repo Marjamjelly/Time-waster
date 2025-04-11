@@ -87,3 +87,23 @@ footer {
 .footer-link:hover {
   text-decoration: underline;
 }
+
+/* Animation for rank change */
+.rank-change {
+  animation: rankSwitch 1s ease-in-out;
+}
+
+@keyframes rankSwitch {
+  0% {
+    transform: scale(1);
+    color: #ff5722;
+  }
+  50% {
+    transform: scale(1.5);
+    color: #4caf50;
+  }
+  100% {
+    transform: scale(1);
+    color: #ff5722;
+  }
+}
