@@ -19,7 +19,10 @@
       </div>
     </div>
     <div id="rank">
-      <span class="label">Rank:</span> <span class="value">Beginner</span>
+      <span class="label">Rank:</span> <span class="value" id="rank-value">Beginner</span>
+    </div>
+    <div id="next-threshold">
+      <span class="label">Next Threshold:</span> <span class="value" id="threshold-value">10</span>
     </div>
   </main>
 
@@ -33,7 +36,8 @@
   <script>
     let totalSeconds = 0;
     const timeTracker = document.getElementById('time-tracker');
-    const rankElement = document.getElementById('rank');
+    const rankElement = document.getElementById('rank-value');
+    const thresholdElement = document.getElementById('threshold-value');
 
     // Array to store ranks and their thresholds
     const ranks = [
@@ -89,14 +93,40 @@
       { threshold: 31536000, name: "Pure Time Waster" },
     ];
 
-    // Function to determine the rank based on the total time
-    function getRank(totalSeconds) {
-      for (const rank of ranks) {
-        if (totalSeconds <= rank.threshold) {
-          return rank.name;
+    // Function to determine the current rank and the next threshold
+    function getRankAndThreshold(totalSeconds) {
+      let currentRank = "Beginner";
+      let nextThreshold = Infinity;
+
+      for (let i = 0; i < ranks.length; i++) {
+        if (totalSeconds >= ranks[i].threshold) {
+          currentRank = ranks[i].name;
+        } else {
+          nextThreshold = ranks[i].threshold;
+          break;
         }
       }
+      return { currentRank, nextThreshold };
     }
+
+    // Update the rank and next threshold display
+    function updateRankAndThreshold() {
+      const { currentRank, nextThreshold } = getRankAndThreshold(totalSeconds);
+      if (rankElement.textContent !== currentRank) {
+        // Add animation for rank change
+        rankElement.classList.add("rank-change");
+        setTimeout(() => rankElement.classList.remove("rank-change"), 1000);
+      }
+      rankElement.textContent = currentRank;
+      thresholdElement.textContent = nextThreshold;
+    }
+
+    // Increment the total seconds and update the display every second
+    setInterval(() => {
+      totalSeconds++;
+      updateTimeCounters();
+      updateRankAndThreshold();
+    }, 1000);
 
     // Function to update the time display
     function updateTimeCounters() {
@@ -105,7 +135,6 @@
       const hours = Math.floor(totalSeconds / 3600) % 24;
       const days = Math.floor(totalSeconds / 86400);
 
-      // Update or create counters dynamically
       updateOrCreateCounter("seconds", seconds, "Seconds:");
       if (totalSeconds >= 60) updateOrCreateCounter("minutes", minutes, "Minutes:");
       if (totalSeconds >= 3600) updateOrCreateCounter("hours", hours, "Hours:");
@@ -124,13 +153,6 @@
         element.querySelector(".value").textContent = value;
       }
     }
-
-    // Increment the total seconds and update the display every second
-    setInterval(() => {
-      totalSeconds++;
-      updateTimeCounters();
-      rankElement.querySelector(".value").textContent = getRank(totalSeconds);
-    }, 1000);
   </script>
 </body>
 </html>

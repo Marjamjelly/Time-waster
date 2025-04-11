@@ -1,1 +1,1 @@
-# Time-waster
+# Time Waster
